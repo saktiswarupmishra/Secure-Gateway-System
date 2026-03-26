@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% set active_page = 'settings' %}
+
+{% block title %}Settings — Secure Gateway System{% endblock %}
+{% block page_title %}Settings{% endblock %}
+
+{% block content %}
+<div class="settings-grid">
+    <!-- Encryption Settings -->
+    <div class="settings-section">
+        <h3>🔐 Encryption Settings</h3>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Algorithm</div>
+                <div class="setting-desc">Symmetric encryption algorithm</div>
+            </div>
+            <input type="text" class="setting-input" id="set-algorithm" value="AES-128-CBC (Fernet)" readonly>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Key Rotation (days)</div>
+                <div class="setting-desc">Auto-rotate keys after this period</div>
+            </div>
+            <input type="number" class="setting-input" id="set-key-rotation" data-key="key_rotation_days" min="1" max="365">
+        </div>
+    </div>
+
+    <!-- Gateway Settings -->
+    <div class="settings-section">
+        <h3>🌐 Gateway Settings</h3>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Listen Port</div>
+                <div class="setting-desc">TCP port for incoming connections</div>
+            </div>
+            <input type="number" class="setting-input" id="set-listen-port" data-key="gateway_listen_port" min="1024" max="65535">
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Forward Host</div>
+                <div class="setting-desc">Destination host IP address</div>
+            </div>
+            <input type="text" class="setting-input" id="set-forward-host" data-key="gateway_forward_host">
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Forward Port</div>
+                <div class="setting-desc">Destination port number</div>
+            </div>
+            <input type="number" class="setting-input" id="set-forward-port" data-key="gateway_forward_port" min="1" max="65535">
+        </div>
+    </div>
+
+    <!-- Logging Settings -->
+    <div class="settings-section">
+        <h3>📋 Logging Settings</h3>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Log Retention (days)</div>
+                <div class="setting-desc">Keep logs for this many days</div>
+            </div>
+            <input type="number" class="setting-input" id="set-log-retention" data-key="log_retention_days" min="1" max="3650">
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Log Level</div>
+                <div class="setting-desc">Minimum severity to log</div>
+            </div>
+            <select class="setting-input" id="set-log-level" data-key="log_level" style="cursor:pointer;">
+                <option value="DEBUG">DEBUG</option>
+                <option value="INFO">INFO</option>
+                <option value="WARNING">WARNING</option>
+                <option value="ERROR">ERROR</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- System Info -->
+    <div class="settings-section">
+        <h3>ℹ️ System Information</h3>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Version</div>
+                <div class="setting-desc">Current system version</div>
+            </div>
+            <span class="badge badge-info">v1.0.0</span>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Platform</div>
+                <div class="setting-desc">Operating system</div>
+            </div>
+            <span class="mono">Windows</span>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-label">Encryption Library</div>
+                <div class="setting-desc">cryptography (Python)</div>
+            </div>
+            <span class="mono">Fernet / AES-CBC</span>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top:24px;text-align:right;">
+    {% if session.get('role') == 'admin' %}
+    <button class="btn btn-primary" onclick="saveSettings()">💾 Save Settings</button>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/settings.js"></script>
+{% endblock %}

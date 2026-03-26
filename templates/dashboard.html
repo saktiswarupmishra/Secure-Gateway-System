@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% set active_page = 'dashboard' %}
+
+{% block title %}Dashboard — Secure Gateway System{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stats Row -->
+<div class="stats-grid" id="stats-grid">
+    <div class="stat-card blue">
+        <div class="stat-icon">🔑</div>
+        <div class="stat-value" id="stat-active-keys">—</div>
+        <div class="stat-label">Active Keys</div>
+    </div>
+    <div class="stat-card green">
+        <div class="stat-icon">🔒</div>
+        <div class="stat-value" id="stat-encryptions">—</div>
+        <div class="stat-label">Encryptions</div>
+    </div>
+    <div class="stat-card purple">
+        <div class="stat-icon">📋</div>
+        <div class="stat-value" id="stat-total-logs">—</div>
+        <div class="stat-label">Total Events</div>
+    </div>
+    <div class="stat-card red">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-value" id="stat-failures">—</div>
+        <div class="stat-label">Failures</div>
+    </div>
+</div>
+
+<!-- Gateway Status + Test Panel Row -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+    <!-- Gateway Status -->
+    <div class="gw-panel">
+        <div class="card-header">
+            <div>
+                <div class="card-title">Gateway Status</div>
+                <div class="card-subtitle">TCP proxy controller</div>
+            </div>
+            <div>
+                {% if session.get('role') in ['admin', 'operator'] %}
+                <button class="btn btn-success btn-sm" id="btn-gw-start" onclick="startGateway()">▶ Start</button>
+                <button class="btn btn-danger btn-sm" id="btn-gw-stop" onclick="stopGateway()" style="display:none;">⏹ Stop</button>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="gw-status-indicator">
+            <div class="gw-status-orb inactive" id="gw-orb">🔌</div>
+            <div>
+                <div style="font-weight:600;" id="gw-status-text">Offline</div>
+                <div class="text-muted" style="font-size:12px;" id="gw-uptime">—</div>
+            </div>
+        </div>
+
+        <div class="gw-info-grid">
+            <div class="gw-info-item">
+                <div class="gw-label">Listen Port</div>
+                <div class="gw-value" id="gw-port">9000</div>
+            </div>
+            <div class="gw-info-item">
+                <div class="gw-label">Forward To</div>
+                <div class="gw-value" id="gw-forward">127.0.0.1:9001</div>
+            </div>
+            <div class="gw-info-item">
+                <div class="gw-label">Sessions</div>
+                <div class="gw-value" id="gw-sessions">0</div>
+            </div>
+            <div class="gw-info-item">
+                <div class="gw-label">Bytes Transferred</div>
+                <div class="gw-value" id="gw-bytes">0 B</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Encrypt/Decrypt Test -->
+    <div class="card">
+        <div class="card-header">
+            <div>
+                <div class="card-title">🧪 Encrypt/Decrypt Test</div>
+                <div class="card-subtitle">Verify encryption round-trip</div>
+            </div>
+        </div>
+
+        <div class="test-box">
+            <label for="test-input">Input Data</label>
+            <textarea id="test-input" placeholder="Enter text to encrypt and decrypt...">Hello from Secure Gateway System!</textarea>
+        </div>
+
+        <button class="btn btn-primary btn-sm mt-2" onclick="runTest()">🔄 Run Test</button>
+
+        <div id="test-result" class="hidden"></div>
+    </div>
+</div>
+
+<!-- Recent Activity Table -->
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">Recent Activity</div>
+            <div class="card-subtitle">Latest security events</div>
+        </div>
+        <a href="/logs" class="btn btn-outline btn-sm">View All →</a>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Status</th>
+                    <th>Message</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody id="recent-logs">
+                <tr><td colspan="5" class="text-center text-muted" style="padding:30px;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

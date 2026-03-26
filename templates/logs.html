@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% set active_page = 'logs' %}
+
+{% block title %}Audit Logs — Secure Gateway System{% endblock %}
+{% block page_title %}Audit Logs{% endblock %}
+
+{% block content %}
+<!-- Log Stats -->
+<div class="stats-grid">
+    <div class="stat-card blue">
+        <div class="stat-icon">📋</div>
+        <div class="stat-value" id="stat-total-events">—</div>
+        <div class="stat-label">Total Events</div>
+    </div>
+    <div class="stat-card green">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value" id="stat-success">—</div>
+        <div class="stat-label">Successful</div>
+    </div>
+    <div class="stat-card red">
+        <div class="stat-icon">❌</div>
+        <div class="stat-value" id="stat-failures">—</div>
+        <div class="stat-label">Failures</div>
+    </div>
+    <div class="stat-card purple">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-value" id="stat-warnings">—</div>
+        <div class="stat-label">Warnings</div>
+    </div>
+</div>
+
+<!-- Filters + Export -->
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">Security Event Logs</div>
+            <div class="card-subtitle">Complete audit trail of all system activities</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="exportLogs()">📥 Export CSV</button>
+    </div>
+
+    <div class="filter-bar">
+        <select id="filter-event-type" onchange="loadLogs()">
+            <option value="">All Events</option>
+        </select>
+        <select id="filter-status" onchange="loadLogs()">
+            <option value="">All Statuses</option>
+            <option value="SUCCESS">Success</option>
+            <option value="FAILURE">Failure</option>
+            <option value="WARNING">Warning</option>
+        </select>
+        <input type="text" id="filter-search" placeholder="Search messages..." onkeyup="debounceSearch()">
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Timestamp</th>
+                    <th>Event Type</th>
+                    <th>Status</th>
+                    <th>Source IP</th>
+                    <th>Destination</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody id="logs-table">
+                <tr><td colspan="7" class="text-center text-muted" style="padding:30px;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/logs.js"></script>
+{% endblock %}

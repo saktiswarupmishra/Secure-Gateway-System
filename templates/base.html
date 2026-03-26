@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure Gateway System — End-to-end encrypted communication for legacy systems">
+    <title>{% block title %}Secure Gateway System{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="s-logo">🔐</div>
+                <div>
+                    <div class="s-title">SecureGateway</div>
+                    <div class="s-subtitle">v1.0 — Encryption Suite</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a href="/dashboard" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}" id="nav-dashboard">
+                        <span class="nav-icon">📊</span>
+                        Dashboard
+                    </a>
+                    <a href="/keys" class="nav-item {% if active_page == 'keys' %}active{% endif %}" id="nav-keys">
+                        <span class="nav-icon">🔑</span>
+                        Key Management
+                    </a>
+                    <a href="/logs" class="nav-item {% if active_page == 'logs' %}active{% endif %}" id="nav-logs">
+                        <span class="nav-icon">📋</span>
+                        Audit Logs
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">System</div>
+                    <a href="/settings" class="nav-item {% if active_page == 'settings' %}active{% endif %}" id="nav-settings">
+                        <span class="nav-icon">⚙️</span>
+                        Settings
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card" id="user-card">
+                    <div class="user-avatar" id="user-avatar">?</div>
+                    <div class="user-info">
+                        <div class="user-name" id="display-username">Loading...</div>
+                        <div class="user-role" id="display-role">—</div>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-sm btn-full mt-1" id="btn-logout" onclick="logout()" style="margin-top:10px;">
+                    ↩ Sign Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h2>{% block page_title %}Dashboard{% endblock %}</h2>
+                </div>
+                <div class="topbar-right">
+                    <div class="topbar-btn" onclick="location.reload()" title="Refresh">🔄</div>
+                </div>
+            </div>
+
+            <div class="page-content">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="/static/js/app.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

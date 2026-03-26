@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login — Secure Gateway System">
+    <title>Login — Secure Gateway System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-bg"></div>
+
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="logo-icon">🔐</div>
+                <h1>SecureGateway</h1>
+                <p>Universal Encrypted Communication</p>
+            </div>
+
+            <div class="login-error" id="login-error"></div>
+
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter username" autocomplete="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter password" autocomplete="current-password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" id="btn-login">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p>Secure Gateway System v1.0</p>
+                <p style="margin-top:4px;color:var(--text-muted);">Default: admin / admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/login.js"></script>
+</body>
+</html>

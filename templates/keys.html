@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% set active_page = 'keys' %}
+
+{% block title %}Key Management — Secure Gateway System{% endblock %}
+{% block page_title %}Key Management{% endblock %}
+
+{% block content %}
+<!-- Key Stats -->
+<div class="stats-grid">
+    <div class="stat-card blue">
+        <div class="stat-icon">🔑</div>
+        <div class="stat-value" id="stat-total-keys">—</div>
+        <div class="stat-label">Total Keys</div>
+    </div>
+    <div class="stat-card green">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value" id="stat-active-keys">—</div>
+        <div class="stat-label">Active Keys</div>
+    </div>
+    <div class="stat-card red">
+        <div class="stat-icon">⛔</div>
+        <div class="stat-value" id="stat-inactive-keys">—</div>
+        <div class="stat-label">Inactive Keys</div>
+    </div>
+    <div class="stat-card purple">
+        <div class="stat-icon">⏰</div>
+        <div class="stat-value" id="stat-expiring">—</div>
+        <div class="stat-label">Expiring Soon</div>
+    </div>
+</div>
+
+<!-- Key Actions -->
+<div class="card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">Encryption Keys</div>
+            <div class="card-subtitle">Manage cryptographic keys for AES encryption</div>
+        </div>
+        <div class="flex gap-1">
+            {% if session.get('role') == 'admin' %}
+            <button class="btn btn-primary btn-sm" id="btn-generate" onclick="openGenerateModal()">+ Generate Key</button>
+            <button class="btn btn-outline btn-sm" id="btn-rotate" onclick="rotateKeys()">🔄 Rotate All</button>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Key Preview</th>
+                    <th>Algorithm</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Expires</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="keys-table">
+                <tr><td colspan="8" class="text-center text-muted" style="padding:30px;">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Generate Key Modal -->
+<div class="modal-overlay" id="modal-generate">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Generate New Key</div>
+            <button class="modal-close" onclick="closeModal('modal-generate')">✕</button>
+        </div>
+
+        <div class="form-group">
+            <label for="key-name">Key Name</label>
+            <input type="text" id="key-name" class="form-input" placeholder="e.g. production-key-2024">
+        </div>
+
+        <div class="form-group">
+            <label for="key-expiry">Expires In (days)</label>
+            <input type="number" id="key-expiry" class="form-input" value="30" min="1" max="365">
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-outline btn-sm" onclick="closeModal('modal-generate')">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="generateKey()">Generate</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/keys.js"></script>
+{% endblock %}
